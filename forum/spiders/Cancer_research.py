@@ -17,7 +17,7 @@ from bs4 import BeautifulSoup
 
 # Spider for crawling Adidas website for shoes
 class ForumsSpider(CrawlSpider):
-    name = "epilepsy_ehealthforums_spider"
+    name = "Cancer_research"
     allowed_domains = ["cancerresearch.org"]
     start_urls = [
         "https://www.cancerresearchuk.org/about-cancer/cancer-chat/",
