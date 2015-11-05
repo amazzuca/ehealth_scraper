@@ -33,7 +33,6 @@ class ForumsSpider(CrawlSpider):
             # Rule to follow arrow to next product grid
             Rule(LinkExtractor(
                     restrict_xpaths='//li[@class="next last"]',
-                   )
                 ), follow=True),
         )
 
