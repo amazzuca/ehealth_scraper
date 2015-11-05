@@ -41,7 +41,7 @@ class ForumsSpider(CrawlSpider):
     def parsePostsList(self,response):
         sel = Selector(response)
         html = response.body
-        soup = BeautifulSoup(html.read())
+        soup = BeautifulSoup(html)
         users = soup.findAll('a',{'class':'username'})
         items = []
         topic = response.xpath('//h1/text()').extract()
