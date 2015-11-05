@@ -50,7 +50,7 @@ class ForumsSpider(CrawlSpider):
             item = PostItemsList()
             item['author'] = soup.findAll('a',{'class':'username'})[x].text
             item['author_link']=soup.findAll('a',{'class':'username'})[x]['href']
-            item['create_date']= soup.findAll('div',{'class':'post-content-inner'})[x].span.text[0:10]
+            item['create_date']= soup.findAll('div',{'class':'post-content-inner'})[x].span.text[0:11]
             item['post'] = soup.findAll('div',{'class':'post-content-inner'})[x].find('div',{'class':'field-item even'}).text
             item['tag']='cancer'
             item['topic'] = topic
