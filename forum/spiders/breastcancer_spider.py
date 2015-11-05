@@ -27,12 +27,12 @@ class ForumsSpider(CrawlSpider):
             # Excludes links that end in _W.html or _M.html, because they point to 
             # configuration pages that aren't scrapeable (and are mostly redundant anyway)
             Rule(LinkExtractor(
-                    restrict_xpaths='//h3/a',
+                    restrict_xpaths='//h3/a',deny=(r'user?returnUrl',
                 ), callback='parsePostsList'),
             # Rule to follow arrow to next product grid
             Rule(LinkExtractor(
                     restrict_xpaths='id('group-discussions')/form[1]/a',
-                    deny=(r'user_profile_*\.html',)
+                    
                 ), follow=True),
         )
 
@@ -40,17 +40,17 @@ class ForumsSpider(CrawlSpider):
     # https://github.com/scrapy/dirbot/blob/master/dirbot/pipelines.py
     def parsePostsList(self,response):
         sel = Selector(response)
-        posts = sel.css(".vt_post_holder")
+        posts = sel.xpath('//div[contains(@class,"disc-forums disc-thread")]')
         items = []
-        topic = response.css('h1.caps').xpath('text()').extract()[0]
+        topic = response.xpath("id('topic')/article/h1/text()").extract()
         url = response.url
         for post in posts:
             item = PostItemsList()
-            item['author'] = post.css('.vt_asked_by_user').xpath("./a").xpath("text()").extract()[0]
-            item['author_link']=post.css('.vt_asked_by_user').xpath("./a").xpath("@href").extract()[0]
-            item['create_date']= post.css('.vt_first_timestamp').xpath('text()').extract().extend(response.css('.vt_reply_timestamp').xpath('text()').extract())
-            item['post'] = re.sub('\s+',' '," ".join(post.css('.vt_post_body').xpath('text()').extract()).replace("\t","").replace("\n","").replace("\r",""))
-            item['tag']='epilepsy'
+            item['author'] = post.xpath('//div/div/a/p/strong[2]/text()').extract()
+            item['author_link']=post.xpath('//div/div/a/@href').re('/forums/profiles.*')
+            item['create_date']= post.xpath('//span[contains(@class,"post-meta")]/time/@datetime')[0].extract()
+            item['post'] = post.xpath('//div[contains(@class,"post-content break-word")]/p[1]/text()').extract()
+            item['tag']='Breast Cancer and Screening'
             item['topic'] = topic
             item['url']=url
             logging.info(item.__str__)
