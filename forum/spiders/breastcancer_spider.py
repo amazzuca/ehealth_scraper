@@ -27,13 +27,11 @@ class ForumsSpider(CrawlSpider):
             # Excludes links that end in _W.html or _M.html, because they point to 
             # configuration pages that aren't scrapeable (and are mostly redundant anyway)
             Rule(LinkExtractor(
-                    restrict_xpaths='//h3/a',deny=(r'user?returnUrl',
-                ), callback='parsePostsList'),
+                restrict_xpaths='//h3/a',
+                deny=(r'user?returnUrl')), callback='parsePostsList'),
             # Rule to follow arrow to next product grid
-            Rule(LinkExtractor(
-                    restrict_xpaths='id('group-discussions')/form[1]/a',
-                    
-                ), follow=True),
+            Rule(LinkExtractor(restrict_xpaths="id('group-discussions')/form[1]/a",
+            ), follow=True),
         )
 
     # https://github.com/scrapy/dirbot/blob/master/dirbot/spiders/dmoz.py
@@ -56,3 +54,4 @@ class ForumsSpider(CrawlSpider):
             logging.info(item.__str__)
             items.append(item)
         return items
+
